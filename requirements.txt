@@ -1,4 +1,24 @@
-fastapi==0.109.0
-uvicorn==0.27.0
+# Base Web & API
+fastapi
+uvicorn
+python-multipart
+streamlit
+requests
+huggingface_hub
+
+# Data & Database
 pandas==2.2.0
-python-multipart==0.0.9
+
+# AI & NLP Core
+torch>=2.0.0
+transformers>=4.30.0
+sentencepiece
+tokenizers
+accelerate
+scikit-learn
+nltk
+spacy
+rapidfuzz
+sql_metadata
+func_timeout
+bitsandbytes
