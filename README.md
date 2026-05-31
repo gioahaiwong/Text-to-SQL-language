@@ -1,40 +1,74 @@
-# RESDSQL: Text-to-SQL Local Demo 🔍
+<p align="left">
+    <br>
+    <img src="resdsql.png" width="700"/>
+    <br>
+<p>
 
-Aplikasi berbasis Streamlit untuk mengubah bahasa alami (Inggris) menjadi query SQL menggunakan model T5-Large dan arsitektur RESDSQL. 
+# RESDSQL: Decoupling Schema Linking and Skeleton Parsing for Text-to-SQL
 
-## 🛠️ Instalasi & Persiapan
+This is a modified implementation for **Local Interactive Demo** based on the official paper "RESDSQL: Decoupling Schema Linking and Skeleton Parsing for Text-to-SQL" (AAAI 2023).
 
-Repositori ini hanya berisi source code utama. Karena ukuran file model dan database sangat besar, Anda perlu mengunduhnya secara terpisah.
-
-### 1. Download Dependencies
-Pastikan Anda menggunakan Python 3.10 atau 3.11, lalu jalankan:
-```bash
-pip install -r requirements.txt
+If this repository could help you, please cite the following paper:
+```
+@inproceedings{li2022resdsql,
+  author = {Haoyang Li and Jing Zhang and Cuiping Li and Hong Chen},
+  title = "RESDSQL: Decoupling Schema Linking and Skeleton Parsing for Text-to-SQL",
+  booktitle = "AAAI",
+  year = "2023"
+}
 ```
 
-### 2. Download Model & Database
-Anda wajib menyiapkan folder berikut di dalam direktori `Text-to-SQL-language`:
-*   `database/` : Berisi folder-folder database SQLite (misal: `concert_singer`, `car_1`).
-*   `models/classifier/` : Berisi model Schema Item Classifier.
-*   `text2natsql-t5-large/` : Berisi model utama T5-Large.
+## 🚀 Interactive Local Demo (New)
+We have added a **Streamlit-based web interface** to allow you to interactively test the model with your own questions or existing Spider databases.
 
-*(Catatan: Anda bisa meminta file `.zip` lengkap yang berisi folder-folder ini kepada pemilik repositori via Google Drive).*
+### Prerequisites
+1. **Python Environment**: Recommended Python 3.10 or 3.11.
+2. **Install Dependencies**:
+   ```sh
+   pip install -r requirements.txt
+   ```
 
-## 🚀 Cara Menjalankan (Demo Lokal)
+### Prepare Data & Models
+Since model weights and databases are large, they are **not included** in this git repository. You must download and place them in the following structure:
+- `database/`: Folder containing SQLite databases (e.g., `concert_singer/`).
+- `models/classifier/`: Cross-encoder checkpoint.
+- `text2natsql-t5-large/`: T5-Large generator checkpoint.
 
-Cara paling mudah untuk menjalankan aplikasi ini di Windows adalah dengan mengklik ganda file:
+> **Note**: You can request the full `.zip` package (including these folders) from the maintainer via Google Drive.
+
+### How to Run
+On Windows, simply double-click:
 👉 **`run_demo.bat`**
 
-Atau jalankan manual via terminal:
-```bash
+Or run via terminal:
+```sh
 streamlit run main_streamlit.py
 ```
 
-## 💡 Fitur `q.txt` (Contoh Pertanyaan)
-Aplikasi ini mendukung deteksi contoh pertanyaan otomatis. Jika Anda ingin menambahkan contoh pertanyaan untuk sebuah database agar muncul di UI Streamlit, cukup buat file bernama `q.txt` di dalam folder database tersebut (contoh: `database/car_1/q.txt`). Tulis satu pertanyaan per baris.
-
-## ⚙️ Hugging Face Spaces
-Repositori ini juga kompatibel untuk di-deploy ke Hugging Face Spaces (SDK: Streamlit) dengan nama file utama `main_streamlit.py`.
+### 💡 Example Questions (`q.txt`)
+The demo automatically detects example questions for each database. To add your own examples, create a `q.txt` file inside the specific database folder (e.g., `database/my_db/q.txt`) with one question per line.
 
 ---
-*Note: Folder `database`, `models`, dan `data` di-ignore dari git untuk menjaga repositori tetap ringan.*
+
+## Original Paper Overview
+We introduce a new Text-to-SQL parser, **RESDSQL** (**R**anking-enhanced **E**ncoding plus a **S**keleton-aware **D**ecoding framework for Text-to-**SQL**), which attempts to decoulpe the schema linking and the skeleton parsing to reduce the difficulty of Text-to-SQL. More details can be found in our [paper](https://arxiv.org/abs/2302.05965).
+
+## Evaluation Results (Spider)
+| Model | Dev EM | Dev EX | Test EM | Test EX |
+|-------|--------|--------|---------|---------|
+| RESDSQL-3B+NatSQL | **80.5%** | **84.1%** | **72.0%** | **79.9%** |
+| RESDSQL-Large+NatSQL | 76.7% | 81.9% | - | - |
+
+## Original Training & Inference
+### Download Data & Models
+Download [data](https://drive.google.com/file/d/19tsgBGAxpagULSl9r85IFKIZb4kyBGGu/view?usp=sharing) (Spider datasets) and [database](https://drive.google.com/file/d/1s4ItreFlTa8rUdzwVRmUR2Q9AHnxbNjo/view?usp=share_link) (SQLite files) and unzip them into the root directory.
+
+### Checkpoints
+- **Classifier**: [Google Drive Link](https://drive.google.com/file/d/1UWNj1ZADfKa1G5I4gBYCJeEQO6piMg4G/view?usp=share_link)
+- **T5-Large**: [Google Drive Link](https://drive.google.com/file/d/1ZwFsH24_qKC3xwYdedPi6T_8argguWHe/view?usp=sharing)
+- **T5-3B**: [OneDrive link](https://1drv.ms/u/s!Ak05bBUBFYiktcdziiE79xaeKtO6qg?e=e9424n)
+
+Place these checkpoints in the `models/` folder as per original instructions.
+
+---
+*Disclaimer: This repository has been optimized for local demonstration. Large binary files are excluded via `.gitignore`.*
