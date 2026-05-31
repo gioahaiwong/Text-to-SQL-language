@@ -6,7 +6,9 @@
 
 # RESDSQL: Decoupling Schema Linking and Skeleton Parsing for Text-to-SQL
 
-This is a modified implementation for **Local Interactive Demo** based on the official paper "RESDSQL: Decoupling Schema Linking and Skeleton Parsing for Text-to-SQL" (AAAI 2023).
+This is a modified implementation for **Local Interactive Demo** based on the official paper "RESDSQL: Decoupling Schema Linking and Skeleton Parsing for Text-to-SQL" (AAAI 2023). 
+
+This version specifically uses the **NatSQL** enhanced checkpoints for better performance and efficiency.
 
 If this repository could help you, please cite the following paper:
 ```
@@ -30,11 +32,10 @@ We have added a **Streamlit-based web interface** to allow you to interactively 
 
 ### Prepare Data & Models
 Since model weights and databases are large, they are **not included** in this git repository. You must download and place them in the following structure:
-- `database/`: Folder containing SQLite databases (e.g., `concert_singer/`).
-- `models/classifier/`: Cross-encoder checkpoint.
-- `text2natsql-t5-large/`: T5-Large generator checkpoint.
 
-> **Note**: You can request the full `.zip` package (including these folders) from the maintainer via Google Drive.
+1.  **Database Folder**: Create a `database/` folder in the root and fill it with SQLite databases.
+2.  **Classifier Model**: Download and place in `models/classifier/`.
+3.  **T5-Large Model**: Download and place in `text2natsql-t5-large/`.
 
 ### How to Run
 On Windows, simply double-click:
@@ -46,29 +47,29 @@ streamlit run main_streamlit.py
 ```
 
 ### 💡 Example Questions (`q.txt`)
-The demo automatically detects example questions for each database. To add your own examples, create a `q.txt` file inside the specific database folder (e.g., `database/my_db/q.txt`) with one question per line.
+The demo automatically detects example questions for each database. To add your own examples, create a `q.txt` file inside the specific database folder (e.g., `database/car_1/q.txt`) with one question per line.
 
 ---
 
-## Original Paper Overview
-We introduce a new Text-to-SQL parser, **RESDSQL** (**R**anking-enhanced **E**ncoding plus a **S**keleton-aware **D**ecoding framework for Text-to-**SQL**), which attempts to decoulpe the schema linking and the skeleton parsing to reduce the difficulty of Text-to-SQL. More details can be found in our [paper](https://arxiv.org/abs/2302.05965).
-
 ## Evaluation Results (Spider)
-| Model | Dev EM | Dev EX | Test EM | Test EX |
-|-------|--------|--------|---------|---------|
-| RESDSQL-3B+NatSQL | **80.5%** | **84.1%** | **72.0%** | **79.9%** |
-| RESDSQL-Large+NatSQL | 76.7% | 81.9% | - | - |
+| Model | Dev EM | Dev EX |
+|-------|--------|--------|
+| **RESDSQL-Large+NatSQL (Used in this Demo)** | **76.7%** | **81.9%** |
 
-## Original Training & Inference
-### Download Data & Models
-Download [data](https://drive.google.com/file/d/19tsgBGAxpagULSl9r85IFKIZb4kyBGGu/view?usp=sharing) (Spider datasets) and [database](https://drive.google.com/file/d/1s4ItreFlTa8rUdzwVRmUR2Q9AHnxbNjo/view?usp=share_link) (SQLite files) and unzip them into the root directory.
+---
 
-### Checkpoints
-- **Classifier**: [Google Drive Link](https://drive.google.com/file/d/1UWNj1ZADfKa1G5I4gBYCJeEQO6piMg4G/view?usp=share_link)
-- **T5-Large**: [Google Drive Link](https://drive.google.com/file/d/1ZwFsH24_qKC3xwYdedPi6T_8argguWHe/view?usp=sharing)
-- **T5-3B**: [OneDrive link](https://1drv.ms/u/s!Ak05bBUBFYiktcdziiE79xaeKtO6qg?e=e9424n)
+## Download Resources
+To run this demo, please download the specific NatSQL-enabled checkpoints and datasets:
 
-Place these checkpoints in the `models/` folder as per original instructions.
+### 1. Dataset & Databases
+*   **Spider Databases**: [Download Link](https://drive.google.com/file/d/1s4ItreFlTa8rUdzwVRmUR2Q9AHnxbNjo/view?usp=share_link)
+*   **Spider Data (Json)**: [Download Link](https://drive.google.com/file/d/19tsgBGAxpagULSl9r85IFKIZb4kyBGGu/view?usp=sharing)
+
+### 2. Checkpoints (NatSQL Version)
+| Checkpoint Type | Model Name | Download Link |
+|-----------------|------------|---------------|
+| **Classifier** | `text2natsql_schema_item_classifier` | [Google Drive](https://drive.google.com/file/d/1UWNj1ZADfKa1G5I4gBYCJeEQO6piMg4G/view?usp=share_link) |
+| **Generator** | `text2natsql-t5-large` | [Google Drive](https://drive.google.com/file/d/1ZwFsH24_qKC3xwYdedPi6T_8argguWHe/view?usp=sharing) |
 
 ---
 *Disclaimer: This repository has been optimized for local demonstration. Large binary files are excluded via `.gitignore`.*
