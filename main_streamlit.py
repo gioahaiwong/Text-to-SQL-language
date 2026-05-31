@@ -4,8 +4,10 @@ import sqlite3
 import pandas as pd
 import sys
 
-# Ensure localized path
-sys.path.append(os.getcwd())
+# Tambahkan root directory ke sys.path
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+if ROOT_DIR not in sys.path:
+    sys.path.append(ROOT_DIR)
 
 from app.nlp_logic.ai_pipeline import RESDSQLPipelineV2
 from app.nlp_logic.utils.schema_reader import SchemaReader
@@ -24,8 +26,24 @@ st.title("🔍 RESDSQL Text-to-SQL Explorer")
 
 # 1. Database Selection
 db_root = "database"
-available_dbs = [d for d in os.listdir(db_root) if os.path.isdir(os.path.join(db_root, d))]
-selected_db = st.selectbox("📁 Pilih Database:", sorted(available_dbs))
+# Shortlist database yang datanya lengkap, akurasi tinggi, dan mudah dipahami
+shortlist_dbs = [
+    "concert_singer",
+    "car_1",
+    "student_1",
+    "flight_2",
+    "stadium_and_event",
+    "world_1",
+    "bakery_1",
+    "wine_1",
+    "club_1",
+    "bike_1"
+]
+
+# Pastikan folder database tersebut memang ada sebelum ditampilkan
+available_dbs = [d for d in shortlist_dbs if os.path.isdir(os.path.join(db_root, d))]
+
+selected_db = st.selectbox("📁 Pilih Database Demo:", available_dbs)
 
 db_path = os.path.join(db_root, selected_db, f"{selected_db}.sqlite")
 schema_reader = SchemaReader(db_path)
@@ -43,7 +61,31 @@ with st.expander("📊 Lihat Struktur Database (Schema)", expanded=True):
 st.markdown("---")
 
 # 3. Input Question
-question = st.text_input("💬 Masukkan pertanyaan (Bahasa Inggris):", placeholder="Example: How many singers do we have?")
+st.markdown("---")
+st.subheader("💬 Masukkan Pertanyaan")
+
+# Logic to load example questions
+example_questions = []
+q_file_path = os.path.join(db_root, selected_db, "q.txt")
+if os.path.exists(q_file_path):
+    with open(q_file_path, "r") as f:
+        # Read lines and filter empty ones
+        example_questions = [line.strip() for line in f.readlines() if line.strip()]
+
+# UI for Examples
+if example_questions:
+    with st.expander("💡 Lihat Contoh Pertanyaan untuk Database ini:"):
+        for ex in example_questions[:5]: # Show top 5
+            if st.button(ex, key=ex):
+                st.session_state.question_input = ex
+
+# Use session state to allow button to fill text input
+if "question_input" not in st.session_state:
+    st.session_state.question_input = ""
+
+question = st.text_input("Masukkan pertanyaan (Bahasa Inggris):", 
+                          value=st.session_state.question_input,
+                          placeholder="Example: How many records are there?")
 
 if st.button("🚀 Generate & Execute"):
     if not question:
