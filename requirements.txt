@@ -4,10 +4,10 @@ uvicorn==0.27.0
 python-multipart==0.0.9
 streamlit==1.31.0
 requests==2.31.0
+huggingface_hub
 
 # Data & Database
 pandas==2.2.0
-sqlite3
 
 # AI & NLP Core
 torch>=2.0.0
