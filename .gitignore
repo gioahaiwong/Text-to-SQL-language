@@ -1,0 +1,23 @@
+# Models
+models/
+text2natsql-t5-large/
+text2sql-t5-3b/
+
+# Data
+data/
+database/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+__MACOSX/
